@@ -1,0 +1,26 @@
+---
+- hosts: router
+  name: Install software on router
+  gather_facts: true
+
+  tasks:
+    - name: Install iptables
+      become: true
+      apt:
+        name: iptables
+        update_cache: true
+    - name: Test iptables
+      command: iptables --version
+      environment:
+        PATH: /usr/sbin:${PATH}
+      register: iptables_test
+
+    - debug: var=iptables_test.stdout
+
+- hosts: pc
+  name: Install nginx for testing
+  gather_facts: true
+
+  roles:
+    - role: geerlingguy.nginx
+      become: true
