@@ -15,7 +15,8 @@
         PATH: /usr/sbin:${PATH}
       register: iptables_test
 
-    - debug: var=iptables_test.stdout
+    - debug: 
+        var: iptables_test.stdout
 
 - hosts: pc
   name: Install nginx for testing
