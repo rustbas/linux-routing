@@ -1,5 +1,5 @@
 ---
-- hosts: router
+- hosts: routers
   name: Install software on router
   gather_facts: true
 
@@ -18,22 +18,19 @@
     - debug: 
         var: iptables_test.stdout
 
-    - name: Install dependecies
+    - name: Allow IP forwarding in kernel
       become: true
-      ansible.builtin.package:
-        name:
-          - network-manager
-        state: present
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: "1"
 
-    - name: Set static IP
-      become: true
-      nmcli:
-        conn_name: my-eth1
-        ifname: eth1
-        type: ethernet
-        ip4: 10.0.0.1
-        gw4: 10.0.0.1
-        state: present
+  # - name: Set iptables rules for IP forwarding
+  #   become: true
+  #   iptables:
+  #     table: nat
+  #     chain: POSTROUTING
+  #     out_interface: enp0s5
+  #     jump: MASQUERADE
 
 - hosts: pc
   name: Install nginx for testing
