@@ -24,13 +24,13 @@ Vagrant.configure("2") do |config|
         vb.cpus = node[:cpu]
       end
 
-    # config.vm.provision "ansible" do |ansible|
-    #   ansible.playbook = "provisioning/playbook.yaml"
-    #   ansible.groups = {
-    #     "pc"     => ["node-1", "node-3"],
-    #     "router" => ["node-2"],
-    #   }
-    #  end
+      config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "provisioning/playbook.yaml"
+        ansible.groups = {
+          "pc"     => ["node-1", "node-3"],
+          "router" => ["node-2"],
+        }
+       end
     end
   end
 
