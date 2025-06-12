@@ -18,6 +18,23 @@
     - debug: 
         var: iptables_test.stdout
 
+    - name: Install dependecies
+      become: true
+      ansible.builtin.package:
+        name:
+          - network-manager
+        state: present
+
+    - name: Set static IP
+      become: true
+      nmcli:
+        conn_name: my-eth1
+        ifname: eth1
+        type: ethernet
+        ip4: 10.0.0.1
+        gw4: 10.0.0.1
+        state: present
+
 - hosts: pc
   name: Install nginx for testing
   gather_facts: true
