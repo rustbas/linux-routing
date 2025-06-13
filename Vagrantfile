@@ -59,8 +59,8 @@ Vagrant.configure("2") do |config|
       sysctl -w net.ipv4.neigh.default.gc_thresh2=2048
       sysctl -w net.ipv4.neigh.default.gc_thresh3=4096
 
-      ping -W 10 -c 5 10.0.1.10
-      ping -W 10 -c 5 10.0.2.10
+      # ping -W 10 -c 5 10.0.1.10
+      # ping -W 10 -c 5 10.0.2.10
     SHELL
   end
 
