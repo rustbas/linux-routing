@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
       nodeconfig.vm.box      = box_name
       nodeconfig.vm.hostname = "host-#{ i+1 }"
 
-      nodeconfig.vm.network :private_network, ip: "10.0.#{ i+1 }.10" # , virtualbox__intnet: "subnet#{i+1}"
+      nodeconfig.vm.network :private_network, ip: "10.0.#{ i+1 }.10" , virtualbox__intnet: "subnet#{i+1}"
 
       nodeconfig.vm.provider :libvirt do |vb|
         vb.memory = node[:memory]
@@ -41,8 +41,8 @@ Vagrant.configure("2") do |config|
     nodeconfig.vm.box      = box_name
     nodeconfig.vm.hostname = "router"
 
-    nodeconfig.vm.network :private_network, ip: "10.0.1.1" #, virtualbox__intnet: "subnet1"
-    nodeconfig.vm.network :private_network, ip: "10.0.2.1" #, virtualbox__intnet: "subnet2"
+    nodeconfig.vm.network :private_network, ip: "10.0.1.1", virtualbox__intnet: "subnet1"
+    nodeconfig.vm.network :private_network, ip: "10.0.2.1", virtualbox__intnet: "subnet2"
 
     nodeconfig.vm.provider :libvirt do |vb|
       vb.memory = router[:memory]
@@ -50,10 +50,18 @@ Vagrant.configure("2") do |config|
     end
 
     # Manual ping to create ARP-requests
-  # nodeconfig.vm.provision "shell", inline: <<-SHELL
-  #   ping -W 10 -c 5 10.0.1.10
-  #   ping -W 10 -c 5 10.0.2.10
-  # SHELL
+    nodeconfig.vm.provision "shell", inline: <<-SHELL
+      # ARP-records lifetime
+      sysctl -w net.ipv4.neigh.default.gc_stale_time=600
+
+      # Simplier 
+      sysctl -w net.ipv4.neigh.default.gc_thresh1=1024
+      sysctl -w net.ipv4.neigh.default.gc_thresh2=2048
+      sysctl -w net.ipv4.neigh.default.gc_thresh3=4096
+
+      ping -W 10 -c 5 10.0.1.10
+      ping -W 10 -c 5 10.0.2.10
+    SHELL
   end
 
   config.vm.provision "ansible" do |ansible|
