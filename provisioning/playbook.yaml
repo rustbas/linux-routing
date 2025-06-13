@@ -9,7 +9,6 @@
       apt:
         name: 
           - iptables
-          - tcpdump
         update_cache: true
     - name: Test iptables
       command: iptables --version
