@@ -50,10 +50,10 @@ Vagrant.configure("2") do |config|
     end
 
     # Manual ping to create ARP-requests
-    nodeconfig.vm.provision "shell", inline: <<-SHELL
-      ping -W 10 -c 1 10.0.1.10
-      ping -W 10 -c 1 10.0.2.10
-    SHELL
+  # nodeconfig.vm.provision "shell", inline: <<-SHELL
+  #   ping -W 10 -c 5 10.0.1.10
+  #   ping -W 10 -c 5 10.0.2.10
+  # SHELL
   end
 
   config.vm.provision "ansible" do |ansible|
