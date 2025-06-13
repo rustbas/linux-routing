@@ -4,10 +4,12 @@
   gather_facts: true
 
   tasks:
-    - name: Install iptables
+    - name: Install network utils
       become: true
       apt:
-        name: iptables
+        name: 
+          - iptables
+          - tcpdump
         update_cache: true
     - name: Test iptables
       command: iptables --version
