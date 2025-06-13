@@ -24,13 +24,23 @@
         name: net.ipv4.ip_forward
         value: "1"
 
-  # - name: Set iptables rules for IP forwarding
-  #   become: true
-  #   iptables:
-  #     table: nat
-  #     chain: POSTROUTING
-  #     out_interface: enp0s5
-  #     jump: MASQUERADE
+    - name: Set iptables first rule for IP forwarding
+      become: true
+      iptables:
+        table: nat
+        chain: POSTROUTING
+        source: 10.0.1.0/24
+        destination: 10.0.2.0/24
+        jump: MASQUERADE
+
+    - name: Set iptables second rule for IP forwarding
+      become: true
+      iptables:
+        table: nat
+        chain: POSTROUTING
+        source: 10.0.2.0/24
+        destination: 10.0.1.0/24
+        jump: MASQUERADE
 
 - hosts: pc
   name: Install nginx for testing
