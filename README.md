@@ -10,7 +10,8 @@
 ## Использование
 
 Предварительно необходимо:
-1. Установить `vagrant` и `ansible`
+1. Установить `vagrant` и `ansible`. Также нужно установить роль для 
+   ansible `ansible-galaxy install geerlingguy.nginx`.
 2. Скачать **box** виртуальной машины с сайта HashiCorp (необходима версия с
    *libvirt*).
 
